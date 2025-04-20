@@ -2,31 +2,35 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const serverless = require('serverless-http'); // Додаємо
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Вказуємо правильний шлях до папки public
+// Статика з папки public на рівень вище
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Підключення до MongoDB
 mongoose.connect('mongodb+srv://LeksG:1234@museumsite.9iu4p9f.mongodb.net/', {
+  dbName: 'museum', // опційно: вкажи назву БД
 });
 
+// Модель повідомлень
 const Message = mongoose.model('Message', {
   name: String,
   email: String,
   message: String,
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
 });
 
-// Відправка файлу golovna.htm
+// Віддаємо головну сторінку
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'golovna.htm'));
 });
 
-// Обробка POST-запиту з форми
+// Приймаємо повідомлення з форми
 app.post('/api/messages', async (req, res) => {
   const { name, email, message } = req.body;
   try {
@@ -38,7 +42,6 @@ app.post('/api/messages', async (req, res) => {
   }
 });
 
-// Запуск сервера
-app.listen(3000, () => {
-  console.log('Сервер працює на http://localhost:3000');
-});
+// Експортуємо сервер як serverless function для Vercel
+module.exports = app;
+module.exports.handler = serverless(app);
