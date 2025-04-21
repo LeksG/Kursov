@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   try {
     const client = await connectToDatabase();
-    const db = client.db('your-db-name');
+    const db = client.db('museum');
     const messages = db.collection('messages');
 
     await messages.insertOne({ name, email, message, date: new Date() });
