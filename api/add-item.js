@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     const client = await clientPromise;
-    const db = client.db('mydb');
+    const db = client.db('cluster0');
     const result = await db.collection('items').insertOne({ name, value });
     return res.status(201).json({ insertedId: result.insertedId });
   } catch (err) {
