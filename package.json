@@ -4,11 +4,11 @@
   "engines": {
     "node": "18.x"
   },
-"scripts": {
-  "dev": "next dev"
-},
-
+  "scripts": {
+    "dev": "next dev"
+  },
   "dependencies": {
+    "dotenv": "^16.5.0",
     "mongodb": "^5.0.0"
   }
 }
