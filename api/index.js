@@ -9,9 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Статика з папки public на рівень вище
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
 // Підключення до MongoDB
 mongoose.connect('mongodb+srv://LeksG:1234@museumsite.9iu4p9f.mongodb.net/', {
   dbName: 'museum', // опційно: вкажи назву БД
