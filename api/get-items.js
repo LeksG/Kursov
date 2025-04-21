@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     const client = await clientPromise;
-    const db = client.db('cluster0');            
+    const db = client.db('museum');            
     const items = await db.collection('items').find({}).toArray();
     return res.status(200).json(items);
   } catch (err) {
