@@ -45,20 +45,22 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   const data = Object.fromEntries(formData.entries());
 
   try {
-    // Використовуємо відносний шлях для Vercel
-    const res = await fetch('/api/messages', {
+    // Динамічно визначаємо базовий URL
+    const baseUrl = window.location.origin;
+    const res = await fetch(`${baseUrl}/api/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
 
-    const result = await res.json(); // Якщо є повідомлення у відповіді сервера
+    // Перевірка відповіді
+    const result = await res.json();
 
     if (res.ok) {
       alert('✅ Повідомлення надіслано!');
-      this.reset(); // Очистити форму після успіху
+      this.reset();
     } else {
-      alert('❌ Помилка при надсиланні: ' + result.message || 'Невідома помилка');
+      alert('❌ Помилка при надсиланні: ' + (result.message || 'Невідома помилка'));
     }
   } catch (err) {
     console.error('❌ Помилка fetch:', err);
