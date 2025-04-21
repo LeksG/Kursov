@@ -38,22 +38,33 @@
     </form>
     
     <script>
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
+document.getElementById('contact-form').addEventListener('submit', async function (e) {
   e.preventDefault();
+
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  const res = await fetch('/api/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
+  try {
+    // Використовуємо відносний шлях для Vercel
+    const res = await fetch('/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-  if (res.ok) alert('Повідомлення надіслано!');
-  else alert('Помилка при надсиланні');
+    const result = await res.json(); // Якщо є повідомлення у відповіді сервера
+
+    if (res.ok) {
+      alert('✅ Повідомлення надіслано!');
+      this.reset(); // Очистити форму після успіху
+    } else {
+      alert('❌ Помилка при надсиланні: ' + result.message || 'Невідома помилка');
+    }
+  } catch (err) {
+    console.error('❌ Помилка fetch:', err);
+    alert('❌ Помилка при зв’язку з сервером');
+  }
 });
-
-
     </script>
   </main>
   <footer>
